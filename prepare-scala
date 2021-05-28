@@ -1,0 +1,51 @@
+#!/bin/bash
+# Prepare a new project to use:
+# - bloop/metals/scalafmt 
+# usage: ./prepare <dir>
+
+clear
+
+SCALAFMTCONFFILE=.scalafmt.conf
+SCALAFMTCONF=$(cat <<'END_HEREDOC'
+version = "2.7.4"
+align.preset = more    // For pretty alignment.
+maxColumn = 100 // For my wide 30" display.
+END_HEREDOC
+)
+
+SCALAFMTSBTFILE=scalafmt.sbt
+SCALAFMTSBT=$(cat <<'END_HEREDOC'
+addSbtPlugin("org.scalameta" % "sbt-scalafmt" % "2.4.0")
+END_HEREDOC
+)
+
+PROJECT_DIR=project
+WORKSPACE="$1"
+
+if [[ -d $WORKSPACE ]]; then
+    echo "Preparing directory to bloop/metals/scalafmt..."
+    echo "- [$WORKSPACE] is a valid directory"
+
+    cd $1
+    echo "- In directory $(pwd)" 
+
+    mkdir -p $PROJECT_DIR
+    echo "- created ./project: $(ls $PROJECT_DIR)" 
+
+    sed -i 's/scalaVersion := "2\.12\.[0-9]*"/scalaVersion := "2\.12\.13"/g' build.sbt
+    echo "- fix build.sbt version: $(cat build.sbt | grep '2.12.13')"
+
+    sed -i 's/"scalatest" % "3.*"/"scalatest" % "3.2.2"/g' build.sbt
+    echo "- fix build.sbt version: $(cat build.sbt | grep '3.2.2')"
+
+    echo "$SCALAFMTSBT" > "$PROJECT_DIR/$SCALAFMTSBTFILE"
+    echo "- created $(ls $PROJECT_DIR/$SCALAFMTSBTFILE)"
+
+    echo "$SCALAFMTCONF" > $SCALAFMTCONFFILE
+    echo "- created $(ls $SCALAFMTCONFFILE)"
+
+    echo "finished..."
+else
+    echo "$WORKSPACE is not a valid directory"
+    exit 1
+fi

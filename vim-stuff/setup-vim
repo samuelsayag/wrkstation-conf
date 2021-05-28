@@ -1,0 +1,6 @@
+#!/bin/bash
+
+ln -fs ".vimrc.$1" ~/.vimrc
+rm -rf ~/.vim/bundle
+ln -fs "./bundle.$1" ~/.vim/bundle
+

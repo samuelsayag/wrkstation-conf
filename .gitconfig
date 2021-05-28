@@ -1,0 +1,35 @@
+[user]
+  name = Samuel SAYAG
+  username = ssayag
+  email = samuel.sayag@clicktale.com
+
+[core]
+  pager = delta
+  editor = vim
+  excludesFile = ~/.gitignore-system 
+  #whitespace = fix,-indent-with-non-tab,trailing-space,cr-at-eol
+
+[delta]
+  line-numbers = true	
+  syntax-theme = Solarized (dark)
+
+[interactive]
+  diffFilter = delta --color-only
+
+[alias]
+  # alias list
+  la = "!git config -l | grep alias | cut -c 7-" 
+  # list file in a commit
+  lscmt = "diff-tree --no-commit-id --name-only -r"
+  # history relative date compact
+  lg = "log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow bold)%d%Creset %s %C(magenta bold)(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit"
+  l  = "log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow bold)%d%Creset %s %C(magenta bold)(%cD) %C(bold blue)<%an>%Creset' --abbrev-commit"
+  ld = "log --pretty=format:'%Cred%h%Creset -%C(yellow bold)%d%Creset %s %C(magenta bold)(%cD) %C(bold blue)<%an>%Creset' --abbrev-commit --decorate --numstat"
+  # change since last commit
+  diffc = diff --cached HEAD^
+  # list of file for commit
+  st = "!git status -s | cat -n"
+  # take sha as param list of file different between two commmit
+  lscommit = diff-tree --no-commit-id --name-only -r
+  # take file path as param 
+  showdiff = show --pretty=format:%b
